@@ -22,11 +22,26 @@ const articleSchema = new mongoose.Schema ({
 // creating Model
 const Article = mongoose.model("Article", articleSchema);
 
-
+// getting all the articles
 app.get('/articles', function(req, res) {
   Article.find(function(err, result) {
     if(!err) {
       res.send(result);
+    } else {
+      res.send(err);
+    }
+  });
+});
+
+// posting new articles thru postman
+app.post('/articles', function(req, res) {
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content
+  });
+  newArticle.save(function(err) {
+    if(!err) {
+      res.send("Successfully added a new article.");
     } else {
       res.send(err);
     }
